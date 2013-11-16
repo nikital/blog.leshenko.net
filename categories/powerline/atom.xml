@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: powerline | Nikita Leshenko's Blog]]></title>
+  <link href="http://blog.leshenko.net/categories/powerline/atom.xml" rel="self"/>
+  <link href="http://blog.leshenko.net/"/>
+  <updated>2013-11-16T15:38:44+02:00</updated>
+  <id>http://blog.leshenko.net/</id>
+  <author>
+    <name><![CDATA[Nikita Leshenko]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Powerline Segments not Showing Up in tmux]]></title>
+    <link href="http://blog.leshenko.net/2013/11/16/powerline-segments-not-showing-up-in-tmux/"/>
+    <updated>2013-11-16T14:48:00+02:00</updated>
+    <id>http://blog.leshenko.net/2013/11/16/powerline-segments-not-showing-up-in-tmux</id>
+    <content type="html"><![CDATA[<p>Note to self.</p>
+
+<p>When I set up a new Mac, I like to install Powerline for tmux. Powerline
+documentation recommends installing using:</p>
+
+<pre><code>pip install --user git+git://github.com/Lokaltog/powerline
+</code></pre>
+
+<p>This install Powerline into the user directory, to
+<code>~/Library/Python/2.7/lib/python/site-packages/powerline</code>. When I fire up tmux
+I don&rsquo;t get the &ldquo;segments&rdquo; that are usually found at the bottom right of the
+screen. This happens because they rely on the <code>powerline</code> executable, which
+was installed to <code>~/Library/Python/2.7/bin/</code>. This path isn&rsquo;t in my $PATH by
+default.</p>
+
+<p><strong>Solution</strong>: Add <code>~/Library/Python/2.7/bin/</code> to $PATH.</p>
+
+<p><img src="/uploads/2013/tmux_segments.png"></p>
+]]></content>
+  </entry>
+  
+</feed>

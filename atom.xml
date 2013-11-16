@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Nikita Leshenko's Blog]]></title>
+  <link href="http://blog.leshenko.net/atom.xml" rel="self"/>
+  <link href="http://blog.leshenko.net/"/>
+  <updated>2013-11-16T15:38:44+02:00</updated>
+  <id>http://blog.leshenko.net/</id>
+  <author>
+    <name><![CDATA[Nikita Leshenko]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    
+    <title type="html"><![CDATA[Powerline Segments not Showing Up in tmux]]></title>
+    <link href="http://blog.leshenko.net/2013/11/16/powerline-segments-not-showing-up-in-tmux/"/>
+    
+    <updated>2013-11-16T14:48:00+02:00</updated>
+    <id>http://blog.leshenko.net/2013/11/16/powerline-segments-not-showing-up-in-tmux</id>
+    
+    <content type="html"><![CDATA[<p>Note to self.</p>
+
+<p>When I set up a new Mac, I like to install Powerline for tmux. Powerline
+documentation recommends installing using:</p>
+
+<pre><code>pip install --user git+git://github.com/Lokaltog/powerline
+</code></pre>
+
+<p>This install Powerline into the user directory, to
+<code>~/Library/Python/2.7/lib/python/site-packages/powerline</code>. When I fire up tmux
+I don&rsquo;t get the &ldquo;segments&rdquo; that are usually found at the bottom right of the
+screen. This happens because they rely on the <code>powerline</code> executable, which
+was installed to <code>~/Library/Python/2.7/bin/</code>. This path isn&rsquo;t in my $PATH by
+default.</p>
+
+<p><strong>Solution</strong>: Add <code>~/Library/Python/2.7/bin/</code> to $PATH.</p>
+
+<p><img src="http://blog.leshenko.net/uploads/2013/tmux_segments.png"></p>
+]]></content>
+    
+  </entry>
+  
+  <entry>
+    
+    <title type="html"><![CDATA[Testing Octopress]]></title>
+    <link href="http://blog.leshenko.net/2013/09/05/testing-octopress/"/>
+    
+    <updated>2013-09-05T18:49:00+03:00</updated>
+    <id>http://blog.leshenko.net/2013/09/05/testing-octopress</id>
+    
+    <content type="html"><![CDATA[<p>Blog running on Octopress running on Jekyll running on Github Pages sounds like
+fun.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+</span><span class='line'>    <span class="k">print</span> <span class="s">&#39;Adding numbers </span><span class="si">%d</span><span class="s"> and </span><span class="si">%d</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">result</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">y</span>
+</span><span class='line'>    <span class="k">return</span> <span class="n">result</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+    
+  </entry>
+  
+</feed>

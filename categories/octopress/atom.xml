@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: octopress | Nikita Leshenko's Blog]]></title>
+  <link href="http://blog.leshenko.net/categories/octopress/atom.xml" rel="self"/>
+  <link href="http://blog.leshenko.net/"/>
+  <updated>2013-11-16T15:38:44+02:00</updated>
+  <id>http://blog.leshenko.net/</id>
+  <author>
+    <name><![CDATA[Nikita Leshenko]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Testing Octopress]]></title>
+    <link href="http://blog.leshenko.net/2013/09/05/testing-octopress/"/>
+    <updated>2013-09-05T18:49:00+03:00</updated>
+    <id>http://blog.leshenko.net/2013/09/05/testing-octopress</id>
+    <content type="html"><![CDATA[<p>Blog running on Octopress running on Jekyll running on Github Pages sounds like
+fun.</p>
+
+<p>``` python
+def add(x, y):</p>
+
+<pre><code>print 'Adding numbers %d and %d' % (x, y)
+result = x + y
+return result
+</code></pre>
+
+<p>```</p>
+]]></content>
+  </entry>
+  
+</feed>
