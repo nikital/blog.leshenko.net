@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: tools | Nikita Leshenko's Blog]]></title>
-  <link href="http://blog.leshenko.net/categories/tools/atom.xml" rel="self"/>
-  <link href="http://blog.leshenko.net/"/>
-  <updated>2013-11-16T15:38:44+02:00</updated>
-  <id>http://blog.leshenko.net/</id>
+  <link href="http://blog.leshenko.net/blog/categories/tools/atom.xml" rel="self"/>
+  <link href="http://blog.leshenko.net/blog/"/>
+  <updated>2013-11-16T15:41:24+02:00</updated>
+  <id>http://blog.leshenko.net/blog/</id>
   <author>
     <name><![CDATA[Nikita Leshenko]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Powerline Segments not Showing Up in tmux]]></title>
-    <link href="http://blog.leshenko.net/2013/11/16/powerline-segments-not-showing-up-in-tmux/"/>
+    <link href="http://blog.leshenko.net/blog/2013/11/16/powerline-segments-not-showing-up-in-tmux/"/>
     <updated>2013-11-16T14:48:00+02:00</updated>
-    <id>http://blog.leshenko.net/2013/11/16/powerline-segments-not-showing-up-in-tmux</id>
+    <id>http://blog.leshenko.net/blog/2013/11/16/powerline-segments-not-showing-up-in-tmux</id>
     <content type="html"><![CDATA[<p>Note to self.</p>
 
 <p>When I set up a new Mac, I like to install Powerline for tmux. Powerline

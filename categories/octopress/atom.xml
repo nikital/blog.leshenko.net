@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Category: octopress | Nikita Leshenko's Blog]]></title>
-  <link href="http://blog.leshenko.net/categories/octopress/atom.xml" rel="self"/>
-  <link href="http://blog.leshenko.net/"/>
-  <updated>2013-11-16T15:38:44+02:00</updated>
-  <id>http://blog.leshenko.net/</id>
+  <link href="http://blog.leshenko.net/blog/categories/octopress/atom.xml" rel="self"/>
+  <link href="http://blog.leshenko.net/blog/"/>
+  <updated>2013-11-16T15:41:24+02:00</updated>
+  <id>http://blog.leshenko.net/blog/</id>
   <author>
     <name><![CDATA[Nikita Leshenko]]></name>
     
@@ -15,9 +15,9 @@
   
   <entry>
     <title type="html"><![CDATA[Testing Octopress]]></title>
-    <link href="http://blog.leshenko.net/2013/09/05/testing-octopress/"/>
+    <link href="http://blog.leshenko.net/blog/2013/09/05/testing-octopress/"/>
     <updated>2013-09-05T18:49:00+03:00</updated>
-    <id>http://blog.leshenko.net/2013/09/05/testing-octopress</id>
+    <id>http://blog.leshenko.net/blog/2013/09/05/testing-octopress</id>
     <content type="html"><![CDATA[<p>Blog running on Octopress running on Jekyll running on Github Pages sounds like
 fun.</p>
 

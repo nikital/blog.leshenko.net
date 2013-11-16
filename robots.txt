@@ -1,4 +1,4 @@
 User-agent: *
 Disallow: 
 
-Sitemap: http://blog.leshenko.net/sitemap.xml 
+Sitemap: http://blog.leshenko.net/blog/sitemap.xml 
