@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
   <title><![CDATA[Nikita Leshenko's Blog]]></title>
-  <link href="http://blog.leshenko.net/blog/atom.xml" rel="self"/>
-  <link href="http://blog.leshenko.net/blog/"/>
-  <updated>2013-11-16T15:44:09+02:00</updated>
-  <id>http://blog.leshenko.net/blog/</id>
+  <link href="http://blog.leshenko.net/atom.xml" rel="self"/>
+  <link href="http://blog.leshenko.net/"/>
+  <updated>2013-11-16T15:56:44+02:00</updated>
+  <id>http://blog.leshenko.net/</id>
   <author>
     <name><![CDATA[Nikita Leshenko]]></name>
     
@@ -15,11 +15,87 @@
   
   <entry>
     
+    <title type="html"><![CDATA[Compressing PDFs with Ghostscript]]></title>
+    <link href="http://blog.leshenko.net/2013/11/16/compressing-pdfs-with-ghostscript/"/>
+    
+    <updated>2013-11-16T15:52:00+02:00</updated>
+    <id>http://blog.leshenko.net/2013/11/16/compressing-pdfs-with-ghostscript</id>
+    
+    <content type="html"><![CDATA[<p>Previously, I was using Photoshop to processed scanned documents, convert them
+to PDFs and compress the PDF. The resulting PDFs were usually less than 800KB
+and that was OK for me. Lately I started using GIMP instead of Photoshop for
+this task and the PDFs that GIMP produced were a few megabytes in size. I
+looked for a way to compress them and found a nice utility called Ghostscript
+that processes PDFs and PostScript files. Here&rsquo;s a script I found to compress
+PDFs using Ghostscript:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c">#!/bin/sh</span>
+</span><span class='line'><span class="nb">set</span> -e
+</span><span class='line'>
+</span><span class='line'><span class="k">if</span> <span class="o">[</span> <span class="s2">&quot;$#&quot;</span> -ne 1 <span class="o">]</span>; <span class="k">then</span>
+</span><span class='line'><span class="k">  </span><span class="nb">echo</span> <span class="s2">&quot;Usage: $0 pdf-file&quot;</span> &gt;&amp;2
+</span><span class='line'>  <span class="nb">echo</span> <span class="s2">&quot;Compresses a PDF file using ghostscript&quot;</span> &gt;&amp;2
+</span><span class='line'>  <span class="nb">exit </span>1
+</span><span class='line'><span class="k">fi</span>
+</span><span class='line'>
+</span><span class='line'><span class="nv">TMP_FILE</span><span class="o">=</span>/tmp/<span class="k">$(</span>basename <span class="s2">&quot;$1&quot;</span><span class="k">)</span>
+</span><span class='line'>mv <span class="s2">&quot;$1&quot;</span> <span class="s2">&quot;$TMP_FILE&quot;</span>
+</span><span class='line'>gs    -q -dNOPAUSE -dBATCH -dSAFER <span class="se">\</span>
+</span><span class='line'>    -sDEVICE<span class="o">=</span>pdfwrite <span class="se">\</span>
+</span><span class='line'>    -dCompatibilityLevel<span class="o">=</span>1.3 <span class="se">\</span>
+</span><span class='line'>    -dEmbedAllFonts<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
+</span><span class='line'>    -dSubsetFonts<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
+</span><span class='line'>    -dColorImageDownsampleType<span class="o">=</span>/Bicubic <span class="se">\</span>
+</span><span class='line'>    -dColorImageResolution<span class="o">=</span>72 <span class="se">\</span>
+</span><span class='line'>    -dGrayImageDownsampleType<span class="o">=</span>/Bicubic <span class="se">\</span>
+</span><span class='line'>    -dGrayImageResolution<span class="o">=</span>72 <span class="se">\</span>
+</span><span class='line'>    -dMonoImageDownsampleType<span class="o">=</span>/Bicubic <span class="se">\</span>
+</span><span class='line'>    -dMonoImageResolution<span class="o">=</span>72 <span class="se">\</span>
+</span><span class='line'>    -sOutputFile<span class="o">=</span><span class="s2">&quot;$1&quot;</span> <span class="se">\</span>
+</span><span class='line'>    <span class="s2">&quot;$TMP_FILE&quot;</span>
+</span><span class='line'><span class="c"># rm &quot;$TMP_FILE&quot;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The last line that removes the temporary file is optional because I would like
+to have a copy of the original file if the compression ends up looking too
+bad.</p>
+]]></content>
+    
+  </entry>
+  
+  <entry>
+    
     <title type="html"><![CDATA[Powerline Segments not Showing Up in tmux]]></title>
-    <link href="http://blog.leshenko.net/blog/2013/11/16/powerline-segments-not-showing-up-in-tmux/"/>
+    <link href="http://blog.leshenko.net/2013/11/16/powerline-segments-not-showing-up-in-tmux/"/>
     
     <updated>2013-11-16T14:48:00+02:00</updated>
-    <id>http://blog.leshenko.net/blog/2013/11/16/powerline-segments-not-showing-up-in-tmux</id>
+    <id>http://blog.leshenko.net/2013/11/16/powerline-segments-not-showing-up-in-tmux</id>
     
     <content type="html"><![CDATA[<p>Note to self.</p>
 
@@ -38,7 +114,7 @@ default.</p>
 
 <p><strong>Solution</strong>: Add <code>~/Library/Python/2.7/bin/</code> to $PATH.</p>
 
-<p><img src="http://blog.leshenko.net/blog/uploads/2013/tmux_segments.png"></p>
+<p><img src="http://blog.leshenko.net/uploads/2013/tmux_segments.png"></p>
 ]]></content>
     
   </entry>
@@ -46,10 +122,10 @@ default.</p>
   <entry>
     
     <title type="html"><![CDATA[Testing Octopress]]></title>
-    <link href="http://blog.leshenko.net/blog/2013/09/05/testing-octopress/"/>
+    <link href="http://blog.leshenko.net/2013/09/05/testing-octopress/"/>
     
     <updated>2013-09-05T18:49:00+03:00</updated>
-    <id>http://blog.leshenko.net/blog/2013/09/05/testing-octopress</id>
+    <id>http://blog.leshenko.net/2013/09/05/testing-octopress</id>
     
     <content type="html"><![CDATA[<p>Blog running on Octopress running on Jekyll running on Github Pages sounds like
 fun.</p>
