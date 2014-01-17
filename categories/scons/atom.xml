@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: scons | Nikita Leshenko's Blog]]></title>
+  <link href="http://blog.leshenko.net/categories/scons/atom.xml" rel="self"/>
+  <link href="http://blog.leshenko.net/"/>
+  <updated>2014-01-17T16:04:51+02:00</updated>
+  <id>http://blog.leshenko.net/</id>
+  <author>
+    <name><![CDATA[Nikita Leshenko]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Porting a C++ Game from iOS to HTML5 with Emscripten]]></title>
+    <link href="http://blog.leshenko.net/2013/09/08/porting-a-game-to-html5-with-emscripten/"/>
+    <updated>2013-09-08T22:46:00+03:00</updated>
+    <id>http://blog.leshenko.net/2013/09/08/porting-a-game-to-html5-with-emscripten</id>
+    <content type="html"><![CDATA[<p><em>This post is about my experience porting a real C++ game to HTML5 with
+Emscripten. It isn&rsquo;t intended to be a general Emscripten tutorial, but
+rather a post about the issues I&rsquo;ve encountered and how I solved them.</em></p>
+
+<p>When I first saw <a href="http://emscripten.org">Emscripten</a> in action I was blown
+away and I immediately decided to give it a try. Emscripten is an
+LLVM-to-JavaScript compiler, which basically means that we can compile C++
+code into JS and run it in the browser with very little effort. After
+compiling a few &ldquo;Hello world&rdquo; projects and verifying that they work, I wanted
+to try Emscripten on a real-world game. My iOS game
+<a href="https://itunes.apple.com/us/app/interlocked/id554072547">Interlocked</a> seemed
+like a good candidate &ndash; it was written in C++ with OpenGL ES 2.0. GLES2 works
+well with Emscripten because it&rsquo;s can be mapped directly to WebGL calls
+without a need for a wrapper.</p>
+
+<p>I assume that you have a bit of experience with Emscripten (i.e. you
+downloaded Emscripten and compiled some tests from there to get a feel for
+it), and SCons.</p>
+
+<h1>Setting the build system</h1>
+
+<p>The original iOS version didn&rsquo;t have a real &ldquo;build system&rdquo;. It was written in
+XCode so I just dragged and dropped files into the project and it somehow
+compiled when I hit Command-R. For Emscripten, I had to choose between good
+old Makefiles, CMake or SCons. I chose SCons because I really like having the
+full power of Python in the build script and I had very positive experience
+with SCons in the past.</p>
+
+<p>As of time of publishing, Emscripten offers two tools for SCons. One is
+located in <code>/tools/scons</code> and the other is in <code>/scons-tools</code>. The former is a
+thin wrapper around <code>emcc</code> and the latter has much more logic and actually
+calls LLVM and <code>emscripten.py</code> by itself.  I tried both and the first tool
+worked better for me. The latter required more setup and I didn&rsquo;t see the
+benefit for using it in my project. (However if I needed more persice code
+generation options I would probably use it.)</p>
+
+<p>In order to follow along, please take a looks the how the source tree of
+Interlocked is organized:</p>
+
+<p>```
+Source tree of Interlocked
+├── Assets
+│   └── &hellip;
+│
+├── GameData
+│   └── &hellip;
+│
+├── Models
+│
+├── Interlocked
+│   └── &hellip; // Platform independent core of the game
+│
+├── Platforms
+│   ├── Android
+│   │   └── &hellip; // Android specific stuff
+│   ├── iOS
+│   │   └── &hellip; // iOS specific stuff
+│   └── html5 // Emscripten stuff
+│       ├── libs
+│       │   ├── libpng
+│       │   └── zlib
+│       └── platform
+│
+└── Tools</p>
+
+<pre><code>└── ...
+</code></pre>
+
+<p>```</p>
+
+<p>The master SConstruct file went into <code>Platforms/html5</code>. It needed to build the
+following components:</p>
+
+<ul>
+<li><code>interlocked_core</code> &ndash; all generic Interlocked code that was in
+<code>Interlocked/</code>. This code was built into it&rsquo;s own static library.</li>
+<li><code>libpng</code> and <code>zlib</code> &ndash; <code>interlocked_core</code> uses them for loading the assets.
+They were also built into static libraries from the sources at
+<code>Platform/html5/libs</code>.</li>
+<li><code>interlocked.html</code> &ndash; the final product was built from the sources at
+<code>Platforms/html5/platform</code> which included the platform-specific code to
+initialize Interlocked. It was linked against <code>interlocked_core</code>, <code>libpng</code>
+and <code>zlib</code>.</li>
+</ul>
+
+
+<p>Here is the base SConstruct script:</p>
+
+<p>```python
+import sys
+import os</p>
+
+<p>env = Environment(</p>
+
+<pre><code>    toolpath=[os.environ['EMSCRIPTEN_TOOL_PATH']]
+    )
+</code></pre>
+
+<p>env.Tool(&lsquo;emscripten&rsquo;)
+env.Append(CCFLAGS=&lsquo;-Wno-warn-absolute-paths&rsquo;)</p>
+
+<p>LIBS = []</p>
+
+<p>PLATFORM_DIR = os.path.abspath(&lsquo;platform&rsquo;)
+LIBS_DIR = os.path.abspath(&lsquo;libs&rsquo;)</p>
+
+<p>CORE_DIR = os.path.abspath(&lsquo;../../Interlocked&rsquo;)
+LIBS += SConscript(&lsquo;SConscript_core&rsquo;, src_dir=CORE_DIR, variant_dir=&lsquo;build/core&rsquo;, duplicate=False,</p>
+
+<pre><code>    exports=['env', 'CORE_DIR', 'PLATFORM_DIR', 'LIBS_DIR'])
+</code></pre>
+
+<p>LIBS += SConscript(&lsquo;libs/libpng/SConscript&rsquo;, variant_dir=&lsquo;build/libs/libpng&rsquo;, duplicate=False,</p>
+
+<pre><code>    exports=['env'])
+</code></pre>
+
+<p>LIBS += SConscript(&lsquo;libs/zlib/SConscript&rsquo;, variant_dir=&lsquo;build/libs/zlib&rsquo;, duplicate=False,</p>
+
+<pre><code>    exports=['env'])
+</code></pre>
+
+<p>SConscript(&lsquo;platform/SConscript&rsquo;, variant_dir=&lsquo;build/interlocked&rsquo;, duplicate=False,</p>
+
+<pre><code>    exports=['env', 'CORE_DIR', 'PLATFORM_DIR', 'LIBS'])
+</code></pre>
+
+<p>```</p>
+
+<h2>Building <code>interloked_core</code></h2>
+
+<p>This one was a bit tricky from SCons perspective.</p>
+
+<ul>
+<li>Source tree</li>
+<li>emscons</li>
+<li>Compile to objects?</li>
+</ul>
+
+
+<h2>TODO</h2>
+
+<ul>
+<li>Open AL</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

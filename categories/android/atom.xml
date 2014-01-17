@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: android | Nikita Leshenko's Blog]]></title>
+  <link href="http://blog.leshenko.net/categories/android/atom.xml" rel="self"/>
+  <link href="http://blog.leshenko.net/"/>
+  <updated>2014-01-17T16:04:51+02:00</updated>
+  <id>http://blog.leshenko.net/</id>
+  <author>
+    <name><![CDATA[Nikita Leshenko]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Integrate GameCircle with an Ant Project]]></title>
+    <link href="http://blog.leshenko.net/2014/01/17/integrate-game-circle-with-ant/"/>
+    <updated>2014-01-17T13:24:00+02:00</updated>
+    <id>http://blog.leshenko.net/2014/01/17/integrate-game-circle-with-ant</id>
+    <content type="html"><![CDATA[<p>I was integrating an Android game with GameCircle by following Amazon&rsquo;s
+<a href="https://developer.amazon.com/public/apis/engage/gamecircle/docs/get-ready-android">documentation</a>,
+and I eventually arrived to <a href="https://developer.amazon.com/public/apis/engage/gamecircle/docs/initialize-android">&ldquo;Initializing GameCircle in Your Game&rdquo;</a>.
+The documentation instructs to import GameCircle SDK into Eclipse&rsquo;s workspace
+and add it as a dependency. Since I wasn&rsquo;t using Eclipse, I had to setup
+the dependency using Ant.</p>
+
+<p>GameCircle SDK looks like this:</p>
+
+<p><code>
+GameCircleSDK/
+├── AndroidManifest.xml
+├── bin
+│   └── placeholder.txt
+├── gen
+│   └── placeholder.txt
+├── jni
+│   ├── includes
+│   │   └── ...
+│   └── libAmazonGamesJni.so
+├── libs
+│   ├── AmazonInsights-android-sdk-2.1.16.jar
+│   ├── gamecirclesdk.jar
+│   └── login-with-amazon-sdk.jar
+├── project.properties
+└── res
+    ├── drawable
+    │   └── rounded_corners.xml
+    ├── layout
+    │   └── modal_overlay_container.xml
+    ├── raw
+    │   └── amazon_gc_prototype.zip
+    └── values
+        └── amazon_gc_styles.xml
+</code></p>
+
+<p>The obvious and easy solution is to merge all these files into my project. It
+would work, but I would prefer to keep the SDK external to my source tree to
+make updates easier. It can be done in two easy steps.</p>
+
+<h2>Step 1 &ndash; Add GameCircle as a reference</h2>
+
+<p>In my project, I first added the SDK path to <code>local.properties</code>:</p>
+
+<p><code>
+sdk.gamecircle=../../../tools/Amazon-SDK/Android/GameCircle/GameCircleSDK/
+</code></p>
+
+<p>This file isn&rsquo;t checked into source control, so it&rsquo;s a good place to put a
+machine-specific path. The path must be relative, because Ant treats <code>/</code> as
+the base of the project and not the root of the file system. Then I referenced
+the SDK in <code>project.properties</code>.</p>
+
+<p><code>
+android.library.reference.1=${sdk.gamecircle}
+</code></p>
+
+<p>When I tried to compile, I got an error:</p>
+
+<p><code>
+BUILD FAILED
+/.../tools/ant/build.xml:601: Invalid file: /.../GameCircleSDK/build.xml
+</code></p>
+
+<h2>Step 2 &ndash; Prepare GameCircle for Ant</h2>
+
+<p>In GameCircle SDK, generate <code>build.xml</code>:</p>
+
+<p><code>
+android update lib-project --path /path/to/gamecirclesdk
+</code></p>
+
+<p>Still one error remaining:</p>
+
+<p><code>
+BUILD FAILED
+/.../ant/build.xml:659: /.../GameCircleSDK/src does not exist.
+</code></p>
+
+<p>I just created an empty directory named <code>src</code>, and the project compiled
+successfully.</p>
+
+<p>Done! I could continue following the documentation.</p>
+]]></content>
+  </entry>
+  
+</feed>
